@@ -403,33 +403,29 @@ public class DataForDB {
 //		註冊時間
 		LocalDate now = LocalDate.now();
 //		塞入預設使用者圖片
-		
-		Blob blob1 = null;
-		Blob blob2 = null;
-		Blob blob3 = null;
+		List<FileInputStream> fisList = new ArrayList<FileInputStream>();
+		List<Blob> blobList = new ArrayList<Blob>();
 		try {
 //			先輸入為BufferedImage (image)
 			FileInputStream fis1 = new FileInputStream("IOFiles/inputJPG/admin.JPG");
 			FileInputStream fis2 = new FileInputStream("IOFiles/inputJPG/member.JPG");
 			FileInputStream fis3 = new FileInputStream("IOFiles/inputJPG/alien.JPG");
-			BufferedImage image1 = ImageIO.read(fis1);
-			BufferedImage image2 = ImageIO.read(fis2);
-			BufferedImage image3 = ImageIO.read(fis3);
-//			再把BufferedImage轉為ByteArrayOutputStream (baos)
-			ByteArrayOutputStream baos1 = new ByteArrayOutputStream();
-			ImageIO.write(image1, "jpg", baos1);
-			ByteArrayOutputStream baos2 = new ByteArrayOutputStream();
-			ImageIO.write(image2, "jpg", baos2);
-			ByteArrayOutputStream baos3 = new ByteArrayOutputStream();
-			ImageIO.write(image3, "jpg", baos3);
-//			ByteArrayOutputStream轉ByteArray (ba)
-			byte[] ba1 = baos1.toByteArray();
-			byte[] ba2 = baos2.toByteArray();
-			byte[] ba3 = baos3.toByteArray();
-// 			convert Byte array to Blob using SerialBlob() method
-			blob1 = new SerialBlob(ba1);
-			blob2 = new SerialBlob(ba2);
-			blob3 = new SerialBlob(ba3);
+			FileInputStream fis4 = new FileInputStream("IOFiles/inputJPG/others.JPG");
+			fisList.add(fis1);
+			fisList.add(fis2);
+			fisList.add(fis3);
+			fisList.add(fis4);
+			for (FileInputStream item: fisList) {
+				BufferedImage image = ImageIO.read(item);
+//				再把BufferedImage轉為ByteArrayOutputStream (baos)
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				ImageIO.write(image, "jpg", baos);
+//				ByteArrayOutputStream轉ByteArray (ba)
+				byte[] ba = baos.toByteArray();
+// 				convert Byte array to Blob using SerialBlob() method
+				Blob blob = new SerialBlob(ba);
+				blobList.add(blob);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -438,13 +434,39 @@ public class DataForDB {
 				GlobalService.encryptString("oracle"));
 		
 		List<WebsiteMember> list = new ArrayList<WebsiteMember>();
-		WebsiteMember wm1 = new WebsiteMember("admin", password, "陳小明", "凱達格蘭大道一號", "admin@gmail.com", "0988588168", "admin", blob1, "art", now, 100000.0, "valid");
-		WebsiteMember wm2 = new WebsiteMember("member", password, "王曉明", "凱達格蘭大道二號", "member@gmail.com", "0966588168", "user", blob2, "photo", now, 10000.0, "valid");
-		WebsiteMember wm3 = new WebsiteMember("alien", password, "林大白", "凱達格蘭大道三號", "alien@gmail.com", "0967889881", "user", blob3, "crafting", now, 1000.0, "valid");
+		WebsiteMember wm1 = new WebsiteMember("admin", password, "陳小明", "凱達格蘭大道一號", "admin@gmail.com", "0988588168", "admin", blobList.get(0), "art", now, 100000.0, "valid");
+		WebsiteMember wm2 = new WebsiteMember("member", password, "王曉明", "凱達格蘭大道二號", "member@gmail.com", "0966588168", "user", blobList.get(1), "photo", now, 10000.0, "valid");
+		WebsiteMember wm3 = new WebsiteMember("alien", password, "林大白", "凱達格蘭大道三號", "alien@gmail.com", "0967679881", "user", blobList.get(2), "eating", now, 1000.0, "valid");
+		WebsiteMember wm4 = new WebsiteMember("alex", password, "艾力克斯權", "凱達格蘭大道四號", "alien@gmail.com", "0967867881", "user", blobList.get(3), "shopping", now, 1000.0, "valid");
+		WebsiteMember wm5 = new WebsiteMember("hanjiping", password, "韓志平", "凱達格蘭大道五號", "alien@gmail.com", "0967632881", "user", blobList.get(3), "surfing", now, 1000.0, "valid");
+		WebsiteMember wm6 = new WebsiteMember("nandaosan", password, "南道山", "凱達格蘭大道六號", "alien@gmail.com", "0967947551", "user", blobList.get(3), "running", now, 1000.0, "valid");
+		WebsiteMember wm7 = new WebsiteMember("yungsan", password, "容山", "凱達格蘭大道七號", "alien@gmail.com", "0962463706", "user", blobList.get(3), "music", now, 1000.0, "valid");
+		WebsiteMember wm8 = new WebsiteMember("chesan", password, "哲山", "凱達格蘭大道八號", "alien@gmail.com", "0935819881", "user", blobList.get(3), "sports", now, 1000.0, "valid");
+		WebsiteMember wm9 = new WebsiteMember("dalmi", password, "徐達美", "凱達格蘭大道九號", "alien@gmail.com", "0965367164", "user", blobList.get(3), "fashion", now, 1000.0, "valid");
+		WebsiteMember wm10 = new WebsiteMember("yongtsai", password, "徐仁才", "凱達格蘭大道十號", "alien@gmail.com", "0961359834", "user", blobList.get(3), "history", now, 1000.0, "valid");
+		WebsiteMember wm11 = new WebsiteMember("jingming", password, "菁明", "凱達格蘭大道11號", "alien@gmail.com", "0937089001", "user", blobList.get(3), "geography", now, 1000.0, "valid");
+		WebsiteMember wm12 = new WebsiteMember("sandbox", password, "沙盒", "凱達格蘭大道12號", "alien@gmail.com", "0967889951", "user", blobList.get(3), "climbing", now, 1000.0, "valid");
+		WebsiteMember wm13 = new WebsiteMember("startup", password, "史大啊", "凱達格蘭大道13號", "alien@gmail.com", "0962419881", "user", blobList.get(3), "hiking", now, 1000.0, "valid");
+		WebsiteMember wm14 = new WebsiteMember("running", password, "快跑啊", "凱達格蘭大道14號", "alien@gmail.com", "0906841289", "user", blobList.get(3), "cooking", now, 1000.0, "valid");
+		WebsiteMember wm15 = new WebsiteMember("itaewon", password, "梨泰院", "凱達格蘭大道15號", "alien@gmail.com", "0911538891", "user", blobList.get(3), "fighting", now, 1000.0, "valid");
+		WebsiteMember wm16 = new WebsiteMember("nainai", password, "奶奶", "凱達格蘭大道16號", "alien@gmail.com", "0966358891", "user", blobList.get(3), "reading", now, 1000.0, "valid");
 
 		list.add(wm1);
 		list.add(wm2);
 		list.add(wm3);
+		list.add(wm4);
+		list.add(wm5);
+		list.add(wm6);
+		list.add(wm7);
+		list.add(wm8);
+		list.add(wm9);
+		list.add(wm10);
+		list.add(wm11);
+		list.add(wm12);
+		list.add(wm13);
+		list.add(wm14);
+		list.add(wm15);
+		list.add(wm16);
 		
 		SessionFactory factory = HibernateUtilNoWeb.getSessionFactory();
 		Session session = factory.getCurrentSession();

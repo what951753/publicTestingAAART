@@ -41,6 +41,7 @@ body {
 	font-size: 26px;
 	color: black;
 }
+
 html, body {
 	height: 100%;
 	padding: 0;
@@ -49,7 +50,7 @@ html, body {
 
 /* 高度要設定固定高否則無法顯示地圖 */
 #artMap {
-	height: 650px;
+	height: 850px;
 	width: 100%;
 }
 
@@ -101,6 +102,22 @@ html, body {
 .myJourney {
 	display: none;
 }
+
+#myJourneyResult {
+	display: none;
+}
+
+.showPins {
+	margin-top: 20px;
+}
+
+.searchBox1, .searchBox2r {
+	padding: 20px 0;
+}
+
+.searchBox1 h1, .searchBox2l h3, .searchBox2r h3 {
+	padding-bottom: 5px;
+}
 </style>
 
 </head>
@@ -121,69 +138,76 @@ html, body {
 		</div>
 	</section>
 	<!-- End banner Area -->
-
 	<!-- 詢問使用者位置 -->
 	<br>
 	<br>
 	<div class="askLocation">
 		<div class="askLocationInner">
 			<!-- 			<h1>今晚，我想來點(X)</h1> -->
-			<h1>輸入任意地點尋找活動：</h1>
-			<br>
 			<div class="searchBox1">
-				<input type="text" id="userLocation" value="台北車站">
+				<h1>輸入任意地點，尋找活動：</h1>
+				<input type="text" id="userLocation">
 			</div>
-			<br>
-			<h3>顯示幾公里內的活動：</h3>
-			<br>
 			<div class="searchBox2">
-				方圓<input type="text" id="userDistance" value="9">公里<br>
+				<div class="searchBox2l">
+					<h3>可接受距離該地點多遠的活動</h3>
+					<input type="text" id="userDistance">公里<br>
+				</div>
+				<div class="searchBox2r">
+					<h3>選擇偏好的藝文活動種類</h3>
+					<select id="actCategory" class="selectCategory">
+						<option>請選擇</option>
+						<option>所有</option>
+						<option>音樂</option>
+						<option>戲劇</option>
+						<option>舞蹈</option>
+						<option>親子</option>
+						<!-- 					<option>獨立音樂</option> -->
+						<option>展覽</option>
+						<option>講座</option>
+						<option>電影</option>
+						<option>綜藝</option>
+						<option>競賽</option>
+						<option>徵選</option>
+						<option>其他</option>
+						<option>未知分類</option>
+						<!-- 					<option>演唱會</option> -->
+						<option>研習課程</option>
+					</select>
+				</div>
+				<div class="oneKey">
+					<button class="genric-btn info radius" id="oneKey" type="button">一鍵輸入</button>
+				</div>
 			</div>
-			<br>
-			<h3>想查詢的藝文活動類別：</h3>
-			<br>
-			<div class="searchBox3">
-				<select id="actCategory" class="selectCategory">
-					<option>請選擇</option>
-					<option>所有</option>
-					<option>音樂</option>
-					<option>戲劇</option>
-					<option>舞蹈</option>
-					<option>親子</option>
-					<!-- 					<option>獨立音樂</option> -->
-					<option>展覽</option>
-					<option>講座</option>
-					<option>電影</option>
-					<option>綜藝</option>
-					<option>競賽</option>
-					<option>徵選</option>
-					<option>其他</option>
-					<option>未知分類</option>
-					<!-- 					<option>演唱會</option> -->
-					<option>研習課程</option>
-				</select>
-			</div>
-			<br> <br> <br> <br>
+			<br> <br>
 			<div class="editPinArea">
 				<input id="editPinButton" class="genric-btn primary radius"
-					type="button" value="規劃我的藝文之旅">
+					type="button" value="用圖釘標記我想去的地方">
 				<div class="myJourney">
 					<div>
-						<label>活動名稱</label> <input id = "actName" type="text">
+						<label>活動名稱</label> <input id="actName" type="text">
 					</div>
-<!-- 					<div> -->
-<!-- 						<label>活動地點</label> <input type="text"> -->
-<!-- 					</div> -->
+					<!-- 					<div> -->
+					<!-- 						<label>活動地點</label> <input type="text"> -->
+					<!-- 					</div> -->
 					<div>
-						<label>活動時間</label> <input id = "actTime" type="text">
+						<label>活動時間</label> <input id="actTime" type="text">
 					</div>
 					<div>
 						<label>備註事項</label>
-						<textarea id = "actNotes"></textarea>
+						<textarea id="actNotes"></textarea>
 					</div>
 					<input id="savePinButton" class="genric-btn primary radius"
 						type="button" value="儲存">
+					<button class="genric-btn info radius" id="oneKey2" type="button">一鍵輸入</button>
 				</div>
+				<div>
+					<p id="myJourneyResult"></p>
+				</div>
+			</div>
+			<div class="showPins">
+				<input id="showPins" class="genric-btn primary radius" type=button
+					onclick="" value="顯示我已經編輯過的地點">
 			</div>
 		</div>
 	</div>
@@ -192,15 +216,45 @@ html, body {
 	<div class="container my-5 mapArea">
 		<div id="artMap"></div>
 	</div>
-	<div class="sendRoute" style="clear: both;">
-		<div class="sendRouteInner">
-			<input class="genric-btn primary radius" type=button
-				onclick="" value="顯示已規劃路線">
-		</div>
-	</div>
+	<div style="clear: both;"></div>
 
 	<script type="text/javascript">
 
+	function getRandomInt(max) {
+		return Math.floor(Math.random() * Math.floor(max));
+	}
+	
+	let oneKey = document.getElementById("oneKey");
+	
+	oneKey.addEventListener("click", () => {
+// 		if(getRandomInt(5)==0){
+// 			document.getElementById("userLocation").value="台南";
+// 			document.getElementById("userDistance").value="4";
+// 		}else if(getRandomInt(5)==1) {
+			document.getElementById("userLocation").value="台北車站";
+			document.getElementById("userDistance").value="3";
+// 		}else if(getRandomInt(5)==2){
+// 			document.getElementById("userLocation").value="西門町";
+// 			document.getElementById("userDistance").value="10";
+// 		}else if(getRandomInt(5)==3){
+// 			document.getElementById("userLocation").value="松山車站";
+// 			document.getElementById("userDistance").value="5";
+// 		}else if(getRandomInt(5)==4){
+// 			document.getElementById("userLocation").value="板橋";
+// 			document.getElementById("userDistance").value="8";
+// 		}
+	});
+
+	let oneKey2 = document.getElementById("oneKey2");
+
+	oneKey2.addEventListener("click", () => {
+		document.getElementById("actName").value="七週年小驚喜";
+		document.getElementById("actTime").value="2020/12/26";
+		document.getElementById("actNotes").value="久違的與女友約會，這個活動種類看起來她會喜歡，到時候要記得搶票";
+	});
+	
+
+// 	初始化地圖參數，這個動作只要做一遍
     let LMap = L.map(document.getElementById('artMap'), {
         center: [23.6, 121], // 中心點
         zoom: 8, // 縮放層級
@@ -383,10 +437,6 @@ html, body {
 	let dis = document.getElementById("userDistance");
 	loc.addEventListener("change", processLocation);
 	dis.addEventListener("change", processLocation);
-
-
-
-
 	
 // 	從這之後是編輯圖釘資訊，定義後續取圖標位置的按鈕要用的變數
 
@@ -424,8 +474,8 @@ html, body {
         // 				console.log("3: "+shape);
         console.log("要用的資料: " + shape_for_db);
         siteObj = {
-                lat: shape.geometry.coordinates[0],
-                lon: shape.geometry.coordinates[1]
+                lat: shape.geometry.coordinates[1],
+                lon: shape.geometry.coordinates[0]
                 }
 //         data.set(counter, JSON.stringify(shape));
     }
@@ -441,48 +491,96 @@ html, body {
 // 	}
 
 	let myJourney = document.querySelector(".myJourney");
+	let editResult = document.getElementById("myJourneyResult");
 	let edit = document.getElementById("editPinButton");
 	let save = document.getElementById("savePinButton");
 
+	let name = document.getElementById("actName");
+	let time = document.getElementById("actTime");
+	let notes = document.getElementById("actNotes");
+
 	let editSiteObj = () => {
 		edit.style.display="none";
+		editResult.style.display="none";
 		myJourney.style.display="block";
+		name.value="";
+		time.value="";
+		notes.value="";
 	}
 	
 	edit.addEventListener("click", editSiteObj);
 
-	let saveSiteObj = () => {
+	let previousPin;
+	let saveSiteObj = (e) => {
 		edit.style.display="";
 		myJourney.style.display="none";
-// 		console.log(siteObj.lat);
-// 		console.log(siteObj.lon);
-		let name = document.getElementById("actName").value;
-		let time = document.getElementById("actTime").value;
-		let notes = document.getElementById("actNotes").value;
+
         let url = "<c:url value='/35/myJourney' />";
-		let data ={
-				name: name,
-				time: time,
-				notes: notes,
-				lat: siteObj.lat,
-				lon: siteObj.lon
+		previousPin ={
+				"name": name.value,
+				"time": time.value,
+				"notes": notes.value,
+				"lat": siteObj.lat,
+				"lon": siteObj.lon
 				}
         fetch(url, {
             method: "post",
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
             },
-            body: JSON.stringify(data)
+            body: JSON.stringify(previousPin)
         })
             .then(status)
             .then(json)
             .then(data => {
-				console.log(data);
+				editResult.style.display = "block";
+				if (data.result=="successful"){
+					editResult.innerText = "新增成功";
+				}else {
+					editResult.innerText = "新增失敗";
+				}
             })
+
+        let positionArray =[]
+       	positionArray[0]=previousPin.lat;
+       	positionArray[1]=previousPin.lon;
+//		設定地圖中心
+    	LMap.setView(positionArray, 15);
+//		繪製查詢中心點圖釘
+        markerRed = L.marker(positionArray, {
+            icon: redIcon
+        })
+        .bindPopup("<b>"+previousPin.name+"</b>"+
+		"<br>詳細資訊: "+"<a href=\"https://www.google.com/search?q="+previousPin.name+"\" target=\"_blank\">點擊查看</a>"+
+		"<br>文化部查詢相關活動: "+"<a href=\"https://www.moc.gov.tw/searchall_5.html?q="+previousPin.name+"\" target=\"_blank\">點擊查看</a>"+
+		"<br>時間: "+previousPin.time+
+		"<br>備註: "+previousPin.notes)
+        .addTo(LMap);
+
+//	    Popup直接顯示出來
+	    markerRed.openPopup();
 	}
 	
 	save.addEventListener("click", saveSiteObj);
 
+	let showPins = document.getElementById("showPins");
+
+	let showMySiteObj = () => {
+		window.location.href="<c:url value='/35/myJourneyEntry' />";
+//         let url = "<c:url value='/35/myJourney' />";
+
+//         fetch(url, {
+//         	method: "get"
+//         })
+//         	.then(status)
+//         	.then(json)
+//         	.then(data => {
+//             	console.log(data)
+//         	});
+	}
+	
+	showPins.addEventListener("click", showMySiteObj);
+	
 	//		下方已經棄用
     // 		IIFEs(Immediately Invoked Functions Expressions)
     // 		第一個括號內是expression，JavaScript會以 expression 的方式來讀取這段函式

@@ -8,7 +8,7 @@
 <title>最近活動搜尋結果</title>
 <style>
 body {
-	font-size: 26px;
+	font-size: 20px;
 	color: black;
 }
 .title {

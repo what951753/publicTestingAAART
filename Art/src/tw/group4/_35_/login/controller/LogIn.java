@@ -81,61 +81,61 @@ public class LogIn {
 			m.addAttribute("authError", "請確認你的帳號密碼是否正確");
 
 			return "35/login/login";
-		}
-
-//		驗證成功，最後會多一頁跳轉方便過濾器刷新身份
-		WebsiteMember memberFullInfo = wmService.getMemberFullInfo(member);
-		HttpServletRequest httpReq = (HttpServletRequest) request;
-		HttpSession session = httpReq.getSession();
-//		會員資料放進session
-		session.setAttribute("member", memberFullInfo);
-//		圖片byteArray透過Base64轉字串，輸出到html
-		byte[] memberPicByteArray = wmService.getMemberPicByteArray(member);
-		String encodedString = Base64.getEncoder().encodeToString(memberPicByteArray);
-		session.setAttribute("memberPic", encodedString);
-
-		// 會員驗證ok，接著建立cookie，搭配FindCookieFilter方便下次登入流程
-		// 若勾選RememberMe**************************************
-		Cookie cookieName = null;
-		Cookie cookiePassword = null;
-		Cookie cookieRememberMe = null;
-		// cookie rm存放瀏覽器送來之RememberMe的選項，如果使用者對RememberMe打勾，rm的值就是yes，就不是null
-		if (rememberMe != null) {
-			cookieName = new Cookie("name", member.getName());
-			cookieName.setMaxAge(7 * 24 * 60 * 60); // Cookie的存活期: 七天
-			cookieName.setPath(ctx.getContextPath());
-
-//			用util內定義公式加密密碼，再存放於cookie內
-			String passwordEncoded = GlobalService.encryptString(unencryptedPassword);
-			cookiePassword = new Cookie("password", passwordEncoded);
-			cookiePassword.setMaxAge(7 * 24 * 60 * 60);
-			cookiePassword.setPath(ctx.getContextPath());
-
-			cookieRememberMe = new Cookie("rm", "true");
-			cookieRememberMe.setMaxAge(7 * 24 * 60 * 60);
-			cookieRememberMe.setPath(ctx.getContextPath());
-			// 若使用者沒對 RememberMe 打勾，需要執行以下方法刪除cookie
 		} else {
-			cookieName = new Cookie("name", member.getName());
-			cookieName.setMaxAge(0); // MaxAge==0 表示要請瀏覽器刪除此Cookie
-			cookieName.setPath(ctx.getContextPath());
+//			會員驗證成功，session放入會員資訊，最後會多一頁跳轉方便過濾器刷新身份
+			WebsiteMember memberFullInfo = wmService.getMemberFullInfo(member);
+			HttpServletRequest httpReq = (HttpServletRequest) request;
+			HttpSession session = httpReq.getSession();
+//			會員資料放進session
+			session.setAttribute("member", memberFullInfo);
+//			圖片byteArray透過Base64轉字串，輸出到html
+			byte[] memberPicByteArray = wmService.getMemberPicByteArray(member);
+			String encodedString = Base64.getEncoder().encodeToString(memberPicByteArray);
+			session.setAttribute("memberPic", encodedString);
 
-			String passwordEncoded = GlobalService.encryptString(unencryptedPassword);
-			cookiePassword = new Cookie("password", passwordEncoded);
-			cookiePassword.setMaxAge(0);
-			cookiePassword.setPath(ctx.getContextPath());
+			// 接著建立cookie，搭配FindCookieFilter方便下次登入流程
+			// 若勾選RememberMe**************************************
+			Cookie cookieName = null;
+			Cookie cookiePassword = null;
+			Cookie cookieRememberMe = null;
+			// cookie rm存放瀏覽器送來之RememberMe的選項，如果使用者對RememberMe打勾，rm的值就是yes，就不是null
+			if (rememberMe != null) {
+				cookieName = new Cookie("name", member.getName());
+				cookieName.setMaxAge(7 * 24 * 60 * 60); // Cookie的存活期: 七天
+				cookieName.setPath(ctx.getContextPath());
 
-			cookieRememberMe = new Cookie("rm", "true");
-			cookieRememberMe.setMaxAge(0);
-			cookieRememberMe.setPath(ctx.getContextPath());
+				// 用util內定義公式加密密碼，再存放於cookie內
+				String passwordEncoded = GlobalService.encryptString(unencryptedPassword);
+				cookiePassword = new Cookie("password", passwordEncoded);
+				cookiePassword.setMaxAge(7 * 24 * 60 * 60);
+				cookiePassword.setPath(ctx.getContextPath());
+
+				cookieRememberMe = new Cookie("rm", "true");
+				cookieRememberMe.setMaxAge(7 * 24 * 60 * 60);
+				cookieRememberMe.setPath(ctx.getContextPath());
+				// 若使用者沒對 RememberMe 打勾，需要執行以下方法刪除cookie
+			} else {
+				cookieName = new Cookie("name", member.getName());
+				cookieName.setMaxAge(0); // MaxAge==0 表示要請瀏覽器刪除此Cookie
+				cookieName.setPath(ctx.getContextPath());
+
+				String passwordEncoded = GlobalService.encryptString(unencryptedPassword);
+				cookiePassword = new Cookie("password", passwordEncoded);
+				cookiePassword.setMaxAge(0);
+				cookiePassword.setPath(ctx.getContextPath());
+
+				cookieRememberMe = new Cookie("rm", "true");
+				cookieRememberMe.setMaxAge(0);
+				cookieRememberMe.setPath(ctx.getContextPath());
+			}
+			HttpServletResponse httpRes = (HttpServletResponse) response;
+			httpRes.addCookie(cookieName);
+			httpRes.addCookie(cookiePassword);
+			httpRes.addCookie(cookieRememberMe);
+			// ********************************************
+
+			return "redirect:/35/loginSuccess";
 		}
-		HttpServletResponse httpRes = (HttpServletResponse) response;
-		httpRes.addCookie(cookieName);
-		httpRes.addCookie(cookiePassword);
-		httpRes.addCookie(cookieRememberMe);
-		// ********************************************
-
-		return "redirect:/35/loginSuccess";
 	}
 
 }

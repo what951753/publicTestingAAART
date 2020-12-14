@@ -41,6 +41,7 @@ body {
 	font-size: 26px;
 	color: black;
 }
+
 html, body {
 	height: 100%;
 	padding: 0;
@@ -109,6 +110,14 @@ html, body {
 .showPins {
 	margin-top: 20px;
 }
+
+.searchBox1, .searchBox2r {
+	padding: 20px 0;
+}
+
+.searchBox1 h1, .searchBox2l h3, .searchBox2r h3 {
+	padding-bottom: 5px;
+}
 </style>
 
 </head>
@@ -136,42 +145,42 @@ html, body {
 	<div class="askLocation">
 		<div class="askLocationInner">
 			<!-- 			<h1>今晚，我想來點(X)</h1> -->
-			<h1>輸入任意地點尋找活動：</h1>
-			<br>
 			<div class="searchBox1">
-				<input type="text" id="userLocation" value="台北車站">
+				<h1>輸入任意地點，尋找活動：</h1>
+				<input type="text" id="userLocation">
 			</div>
-			<br>
-			<h3>顯示幾公里內的活動：</h3>
-			<br>
 			<div class="searchBox2">
-				方圓<input type="text" id="userDistance" value="9">公里<br>
+				<div class="searchBox2l">
+					<h3>可接受距離該地點多遠的活動</h3>
+					<input type="text" id="userDistance">公里<br>
+				</div>
+				<div class="searchBox2r">
+					<h3>選擇偏好的藝文活動種類</h3>
+					<select id="actCategory" class="selectCategory">
+						<option>請選擇</option>
+						<option>所有</option>
+						<option>音樂</option>
+						<option>戲劇</option>
+						<option>舞蹈</option>
+						<option>親子</option>
+						<!-- 					<option>獨立音樂</option> -->
+						<option>展覽</option>
+						<option>講座</option>
+						<option>電影</option>
+						<option>綜藝</option>
+						<option>競賽</option>
+						<option>徵選</option>
+						<option>其他</option>
+						<option>未知分類</option>
+						<!-- 					<option>演唱會</option> -->
+						<option>研習課程</option>
+					</select>
+				</div>
+				<div class="oneKey">
+					<button class="genric-btn info radius" id="oneKey" type="button">一鍵輸入</button>
+				</div>
 			</div>
-			<br>
-			<h3>想查詢的藝文活動類別：</h3>
-			<br>
-			<div class="searchBox3">
-				<select id="actCategory" class="selectCategory">
-					<option>請選擇</option>
-					<option>所有</option>
-					<option>音樂</option>
-					<option>戲劇</option>
-					<option>舞蹈</option>
-					<option>親子</option>
-					<!-- 					<option>獨立音樂</option> -->
-					<option>展覽</option>
-					<option>講座</option>
-					<option>電影</option>
-					<option>綜藝</option>
-					<option>競賽</option>
-					<option>徵選</option>
-					<option>其他</option>
-					<option>未知分類</option>
-					<!-- 					<option>演唱會</option> -->
-					<option>研習課程</option>
-				</select>
-			</div>
-			<br> <br> <br> <br>
+			<br> <br>
 			<div class="editPinArea">
 				<input id="editPinButton" class="genric-btn primary radius"
 					type="button" value="用圖釘標記我想去的地方">
@@ -191,14 +200,15 @@ html, body {
 					</div>
 					<input id="savePinButton" class="genric-btn primary radius"
 						type="button" value="儲存">
+					<button class="genric-btn info radius" id="oneKey2" type="button">一鍵輸入</button>
 				</div>
 				<div>
 					<p id="myJourneyResult"></p>
 				</div>
 			</div>
 			<div class="showPins">
-				<input id="showPins" class="genric-btn primary radius" type=button onclick=""
-					value="顯示我已經編輯過的地點">
+				<input id="showPins" class="genric-btn primary radius" type=button
+					onclick="" value="顯示我已經編輯過的地點">
 			</div>
 		</div>
 	</div>
@@ -210,6 +220,40 @@ html, body {
 	<div style="clear: both;"></div>
 
 	<script type="text/javascript">
+
+	function getRandomInt(max) {
+		return Math.floor(Math.random() * Math.floor(max));
+	}
+	
+	let oneKey = document.getElementById("oneKey");
+	
+	oneKey.addEventListener("click", () => {
+// 		if(getRandomInt(5)==0){
+// 			document.getElementById("userLocation").value="台南";
+// 			document.getElementById("userDistance").value="4";
+// 		}else if(getRandomInt(5)==1) {
+			document.getElementById("userLocation").value="台北車站";
+			document.getElementById("userDistance").value="3";
+// 		}else if(getRandomInt(5)==2){
+// 			document.getElementById("userLocation").value="西門町";
+// 			document.getElementById("userDistance").value="10";
+// 		}else if(getRandomInt(5)==3){
+// 			document.getElementById("userLocation").value="松山車站";
+// 			document.getElementById("userDistance").value="5";
+// 		}else if(getRandomInt(5)==4){
+// 			document.getElementById("userLocation").value="板橋";
+// 			document.getElementById("userDistance").value="8";
+// 		}
+	});
+
+	let oneKey2 = document.getElementById("oneKey2");
+
+	oneKey2.addEventListener("click", () => {
+		document.getElementById("actName").value="七週年小驚喜";
+		document.getElementById("actTime").value="2020/12/26";
+		document.getElementById("actNotes").value="久違的與女友約會，這個活動種類看起來她會喜歡，到時候要記得搶票";
+	});
+	
 
 // 	初始化地圖參數，這個動作只要做一遍
     let LMap = L.map(document.getElementById('artMap'), {

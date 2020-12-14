@@ -12,7 +12,7 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
 body {
-	font-size: 26px;
+	font-size: 20px;
 	color: black;
 }
 tr {

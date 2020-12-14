@@ -10,9 +10,10 @@
 </head>
 <style>
 body {
-	font-size: 26px;
+	font-size: 20px;
 	color: black;
 }
+
 tr {
 	text-align: left;
 }
@@ -84,19 +85,19 @@ fieldset {
 				</tr>
 				<tr>
 					<td><form:label path="password">密碼(必填):</form:label></td>
-					<td><form:input type="password" path="password" /></td>
+					<td><form:input id="pwd" type="password" path="password" /></td>
 				</tr>
 				<tr>
 					<td><label>再次確認密碼(必填):</label></td>
-					<td><input type="password" name="passwordAuth" /></td>
+					<td><input id="pwdSecond" type="password" name="passwordAuth" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="realName">真實姓名(必填):</form:label></td>
-					<td><form:input path="realName" /></td>
+					<td><form:input id="realName" path="realName" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="address">地址:</form:label></td>
-					<td><form:input path="address" /></td>
+					<td><form:input id="address" path="address" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="email">E-mail(必填):</form:label></td>
@@ -104,7 +105,7 @@ fieldset {
 				</tr>
 				<tr>
 					<td><form:label path="tel">電話(必填):</form:label></td>
-					<td><form:input path="tel" /></td>
+					<td><form:input id="tel" path="tel" /></td>
 				</tr>
 				<tr>
 					<td>
@@ -129,12 +130,24 @@ fieldset {
 				</tr>
 				<tr>
 					<td colspan="2" class="goCenter" style="padding-top: 20px;"><form:button
-							class="genric-btn primary radius" value="Send" id='sendData'>送出註冊資料</form:button></td>
+							class="genric-btn primary radius" value="Send" id='sendData'>送出註冊資料</form:button>
+						<button class="genric-btn info radius" id="oneKey"
+							type="button">一鍵輸入</button></td>
 				</tr>
 			</table>
 		</form:form>
 	</fieldset>
 	<script type="text/javascript">
+
+		let oneKey = document.getElementById("oneKey");
+	
+		oneKey.addEventListener("click", () => {
+			document.getElementById("pwd").value="Do!ng123";
+			document.getElementById("pwdSecond").value="Do!ng123";
+			document.getElementById("realName").value="權艾力克斯";
+			document.getElementById("address").value="新北市汐止區新台五路一號2樓";
+			document.getElementById("tel").value="0981554887";
+		});
 
 // 		上傳圖片後觸發change事件，執行這邊定義好的功能
 		document.getElementById('imgUpload').addEventListener('change', () => {

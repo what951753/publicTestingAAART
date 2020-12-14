@@ -11,6 +11,7 @@ body {
 	font-size: 26px;
 	color: black;
 }
+
 .content {
 	text-align: center;
 }
@@ -39,12 +40,13 @@ body {
 		<br>
 		<form action="<c:url value='/35/findNear.ctrl'/> " method="get">
 			<div class="searchBox">
-				<input type="text" name="userLocation" value="">
+				<input id="userLocation" type="text" name="userLocation" value="">
 			</div>
 			<BR>
 			<div class="submitButton">
 				<input class="genric-btn primary radius" type="submit" name="submit"
 					value="確認送出">
+				<button class="genric-btn info radius" id="oneKey" type="button">一鍵輸入</button>
 			</div>
 		</form>
 	</div>
@@ -87,6 +89,21 @@ body {
 		</form>
 	</div>
 	<script type="text/javascript">
+		function getRandomInt(max) {
+			return Math.floor(Math.random() * Math.floor(max));
+		}
+		
+		let oneKey = document.getElementById("oneKey");
+		
+		oneKey.addEventListener("click", () => {
+			if(getRandomInt(3)==0){
+				document.getElementById("userLocation").value="台南";
+			}else if(getRandomInt(3)==1) {
+				document.getElementById("userLocation").value="資策會";
+			}else {
+				document.getElementById("userLocation").value="西門町";
+			}
+		});
 
 // 	宣告一個名為navigete的箭頭函式，傳入參數是addr
 // 	let navigate命名是為了button onclick 要有function名稱

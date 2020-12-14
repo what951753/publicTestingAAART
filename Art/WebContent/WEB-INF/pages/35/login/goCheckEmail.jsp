@@ -10,7 +10,7 @@
 </head>
 <style>
 body {
-	font-size: 26px;
+	font-size: 20px;
 	color: black;
 }
 tr {
@@ -21,7 +21,7 @@ tr {
 	color: red;
 	padding-bottom: 15px;
 	padding-top: 30px;
-	font-size: 22px;
+	font-size: 26px;
 }
 
 fieldset {

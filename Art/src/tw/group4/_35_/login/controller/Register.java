@@ -9,7 +9,6 @@ import java.net.URL;
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
@@ -161,9 +160,9 @@ public class Register {
 				blob = new SerialBlob(mFile.getBytes());
 
 //				把mFile的byte[]叫出來轉Base64字串
-				byte[] memberPicByteArray = mFile.getBytes();
-				String encodedString = Base64.getEncoder().encodeToString(memberPicByteArray);
-				session.setAttribute("memberPic", encodedString);
+//				byte[] memberPicByteArray = mFile.getBytes();
+//				String encodedString = Base64.getEncoder().encodeToString(memberPicByteArray);
+//				session.setAttribute("memberPic", encodedString);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -180,8 +179,8 @@ public class Register {
 				byte[] ba = baos.toByteArray();
 				blob = new SerialBlob(ba);
 
-				String encodedString = Base64.getEncoder().encodeToString(ba);
-				session.setAttribute("memberPic", encodedString);
+//				String encodedString = Base64.getEncoder().encodeToString(ba);
+//				session.setAttribute("memberPic", encodedString);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -200,8 +199,8 @@ public class Register {
 //	 			convert Byte array to Blob using SerialBlob() method
 				blob = new SerialBlob(ba);
 
-				String encodedString = Base64.getEncoder().encodeToString(ba);
-				session.setAttribute("memberPic", encodedString);
+//				String encodedString = Base64.getEncoder().encodeToString(ba);
+//				session.setAttribute("memberPic", encodedString);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -221,6 +220,7 @@ public class Register {
 		m.addAttribute("welcome", member.getName() + "，Email驗證成功<br>請點擊左上角重新登入");
 //		移除已經無用的sessionAttribute
 		session.removeAttribute(name + "member");
+		session.removeAttribute(name + "picUrl");
 		session.removeAttribute(name + "mFile");
 		
 		List<Position> list = ptService.recommendList();

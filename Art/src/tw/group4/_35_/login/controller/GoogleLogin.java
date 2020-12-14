@@ -49,20 +49,21 @@ public class GoogleLogin {
 //			String userId = payload.getSubject();
 //			System.out.println("User ID: " + userId);
 			String name = (String) payload.get("name");
-			System.out.println(name);
+//			System.out.println(name);
 			String email = payload.getEmail();
-			System.out.println(email);
+//			System.out.println(email);
 //			boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-			String familyName = (String) payload.get("family_name");
+//			String familyName = (String) payload.get("family_name");
 			String givenName = (String) payload.get("given_name");
-			System.out.println(familyName+givenName);
+//			System.out.println(familyName+givenName);
 			String pictureUrl = (String) payload.get("picture");
-			System.out.println(pictureUrl);
+//			System.out.println(pictureUrl);
 //			String locale = (String) payload.get("locale");
 			
 			websiteMember.setName(name);
 			websiteMember.setEmail(email);
-			websiteMember.setRealName(familyName+givenName);
+//			websiteMember.setRealName(familyName+givenName);
+			websiteMember.setRealName(givenName);
 			websiteMember.setMemberPicBase64Str(pictureUrl);
 		} else {
 			System.out.println("Invalid ID token.");

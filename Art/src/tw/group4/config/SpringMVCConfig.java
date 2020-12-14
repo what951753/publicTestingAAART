@@ -143,7 +143,7 @@ public class SpringMVCConfig implements WebMvcConfigurer {
 //      把記憶體暫存的上傳檔案大小設定在最高10MB
 //      超過10MB的上傳檔案在讀取一次後就會被刪除，但變數名稱和記憶體位址還會在
 //      導致此錯誤出現: java.lang.IllegalStateException: File has been moved - cannot be read again
-        resolver.setMaxInMemorySize(10 * 1024 * 1024);
+        resolver.setMaxInMemorySize(100 * 1024 * 1024);
         resolver.setDefaultEncoding("UTF-8");
         return resolver;
     }

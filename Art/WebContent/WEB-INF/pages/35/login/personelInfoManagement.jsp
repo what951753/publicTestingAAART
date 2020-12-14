@@ -8,7 +8,7 @@
 <title>查看個人資訊</title>
 <style>
 body {
-	font-size: 26px;
+	font-size: 20px;
 	color: black;
 }
 .post {

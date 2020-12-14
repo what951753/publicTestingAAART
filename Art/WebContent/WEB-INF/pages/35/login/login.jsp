@@ -13,7 +13,7 @@
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <style>
 body {
-	font-size: 26px;
+	font-size: 20px;
 	color: black;
 }
 tr {
@@ -93,18 +93,18 @@ fieldset {
 				</tr>
 				<tr>
 					<td><form:label class="label" path="name">帳號:</form:label></td>
-					<td><form:input path="name" value="${name}" /></td>
+					<td><form:input id="name" path="name" value="${name}" /></td>
 					<td class="errors">${errors.user}</td>
 				</tr>
 				<tr>
 					<td><form:label class="label" path="password">密碼:</form:label></td>
-					<td><form:input type="password" path="password"
+					<td><form:input id="pwd" type="password" path="password"
 							value="${password}" /></td>
 					<td class="errors">${errors.pwd}</td>
 				</tr>
 				<tr>
 					<td><label class="label">記住密碼:</label></td>
-					<td><input type="checkbox" name="rememberMe"
+					<td><input id="rm" type="checkbox" name="rememberMe"
 						<c:if test='${requestScope.rememberMe==true}'>
 					    checked='checked'
               			</c:if>
@@ -120,8 +120,9 @@ fieldset {
 			</table>
 		</form:form>
 		<!-- 		<button class="googleLogin genric-btn info radius">透過Google帳戶登入</button> -->
-		<button class="forgotPwd genric-btn info radius" onclick=forgotPwd()>忘記密碼</button>
+		<button class="genric-btn primary radius" id="oneKey" type="button">一鍵輸入</button>
 		<button class="captcha genric-btn primary radius">登入</button>
+		<button class="forgotPwd genric-btn info radius" onclick=forgotPwd()>忘記密碼</button>
 	</fieldset>
 	<div class="google">
 		<div class="g-signin2 googleLogin" data-onsuccess="onSignIn"></div>
@@ -132,6 +133,14 @@ fieldset {
 	<script
 		src="https://www.google.com/recaptcha/api.js?render=6Lc_wOQZAAAAALKDlGGuMLE_iV-rjKJIYMHI9Fj6"></script>
 	<script type="text/javascript">
+
+		let oneKey = document.getElementById("oneKey");
+
+		oneKey.addEventListener("click", () => {
+			document.getElementById("name").value="GROUP4";
+			document.getElementById("pwd").value="Do!ng123";
+			document.getElementById("rm").checked="checked";
+		});
 
 		let forgotPwd= () => {
 			window.location.href="<c:url value='/35/forgotPwd' />";
