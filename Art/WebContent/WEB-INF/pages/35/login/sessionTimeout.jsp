@@ -5,9 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>登入階段逾期</title>
+<title>新的登入階段</title>
 </head>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .welcome {
 	text-align: center;
 }
@@ -19,10 +23,10 @@
 		<div class="container">
 			<div class="row d-flex align-items-center justify-content-center">
 				<div class="about-content col-lg-12">
-					<h1 class="text-white">登入階段逾期</h1>
+					<h1 class="text-white">新的登入階段</h1>
 					<p class="text-white link-nav">
 						<a href="index.html">Home</a> <span
-							class="lnr lnr-arrow-right"></span> <a href="<c:url value='/' />">登入階段逾期
+							class="lnr lnr-arrow-right"></span> <a href="<c:url value='/' />">新的登入階段
 						</a>
 					</p>
 				</div>
@@ -32,7 +36,7 @@
 	<!-- End banner Area -->
 	<div class="welcome">
 		<br>
-		<h1>登入階段逾期，請重新登入</h1>
+		<h1>開啟新的登入階段，請重新登入</h1>
 		<br>
 <!-- 		<h2>猜您想知道為什麼會逾期</h2> -->
 <%-- 		<h2>因為session裡面沒有${sessionTimeoutToken}屬性</h2> --%>

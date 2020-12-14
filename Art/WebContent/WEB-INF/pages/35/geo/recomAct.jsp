@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>查詢離我最近的活動</title>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .content {
 	text-align: center;
 }

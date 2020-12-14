@@ -3,6 +3,10 @@ package tw.group4._35_.routePlanning.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,18 +17,58 @@ import org.springframework.web.bind.annotation.RestController;
 
 import tw.group4._35_.geo.model.Position;
 import tw.group4._35_.geo.model.PositionService;
+import tw.group4._35_.login.model.WebsiteMember;
+import tw.group4._35_.routePlanning.model.MyJourney;
+import tw.group4._35_.routePlanning.model.MyJourneyService;
 import tw.group4.util.Hibernate;
+import tw.group4.util.NeedLogin;
 
 @RestController
 public class RoutePlanning {
 
 	@Autowired
 	PositionService service;
-
+	
+	@Autowired
+	MyJourneyService myJourneyService;
+	
+//	新增我規劃的行程資料
 	@Hibernate
-	@PostMapping(value = "/35/routePlanning.ctrl")
-	public Map<String, String> routePlanningPost(@RequestBody String str) {
-		System.out.println("post連上線了");
+	@PostMapping(value = "/35/myJourney")
+	public Map<String, String> postMyJourney(@RequestBody MyJourney myJourney, HttpServletRequest request) {
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		HttpSession session = request.getSession();
+		if(Objects.nonNull(session.getAttribute("member"))) {			
+			WebsiteMember member = (WebsiteMember)session.getAttribute("member");
+			myJourney.setMemberName(member.getName());
+		}
+		boolean result = myJourneyService.insertMyJourney(myJourney);
+		
+		if (result == true) {
+			map.put("result", "successful");
+		}else {
+			map.put("result", "failed");
+		}
+		
+		return map;
+	}
+	
+//	取得我規劃的行程資料
+	@NeedLogin
+	@Hibernate
+	@GetMapping(value = "/35/myJourney")
+	public MyJourney getMyJourney(HttpServletRequest request) {
+		
+		MyJourney myJourney = new MyJourney();
+		HttpSession session = request.getSession();
+		if(Objects.nonNull(session.getAttribute("member"))) {			
+			WebsiteMember member = (WebsiteMember)session.getAttribute("member");
+			myJourney.setMemberName(member.getName());
+//			myJourneyService.get
+		}
+
+		
 		return null;
 	}
 

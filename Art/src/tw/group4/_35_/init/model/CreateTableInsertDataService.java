@@ -25,11 +25,15 @@ public class CreateTableInsertDataService {
 		tableForDB.createTablePosition();
 		tableForDB.dropTableWebsiteMember();
 		tableForDB.createTableWebsiteMember();
-		tableForDB.dropTableBURI();
-		tableForDB.createTableBURI();
-		tableForDB.dropTableBUR();
-		tableForDB.createTableBUR();
+//		下方訂單系列這次沒有寫道
+//		tableForDB.dropTableBURI();
+//		tableForDB.createTableBURI();
+//		tableForDB.dropTableBUR();
+//		tableForDB.createTableBUR();
 		
+//		我的旅程表格
+		tableForDB.dropTableMyJourney();
+		tableForDB.createTableMyJourney();
 //		活動場地表格
 		tableForDB.dropTableEventSpace();
 		tableForDB.createTableEventSpace();

@@ -7,12 +7,18 @@ import tw.group4.util.NeedLogin;
 
 @Controller
 public class RoutePlanningEntry {
-	
-	@NeedLogin
+
 	@GetMapping(value = "/35/routePlanningEntry")
 	public String routePlanningEntry() {
 
 		return "35/routePlanning/allRoutes";
+	}
+	
+	@NeedLogin
+	@GetMapping(value = "/35/myJourneyEntry")
+	public String myJourneyEntry() {
+		
+		return "35/routePlanning/myJourney";
 	}
 
 }

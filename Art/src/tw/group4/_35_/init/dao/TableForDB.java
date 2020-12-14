@@ -251,4 +251,43 @@ public class TableForDB {
 		}
 	}
 	
+	//創MyJourney表格
+	public void createTableMyJourney() {
+		
+		try (Connection connection = DataSourceConn.getDataSource().getConnection();) {
+			Statement stmt = connection.createStatement();
+			
+		    String sql = "CREATE TABLE MyJourney (id NUMBER generated always as identity(start with 1 increment by 1 nocache) primary key not null, "
+					   + " name    			varchar2(4000), "
+					   + " time				varchar2(4000), " 
+					   + " notes			varchar2(4000), " 
+					   + " lat    			NUMBER(25, 20),  "
+					   + " lon           	NUMBER(25, 20),  "
+					   + " memberName       varchar2(32)  "
+					   + " )";
+	    
+		    stmt.executeUpdate(sql);
+		    System.out.println("MyJourney表格已建立");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	//刪MyJourney表格
+	public void dropTableMyJourney() {
+		
+		try (Connection connection = DataSourceConn.getDataSource().getConnection();) {
+			Statement stmt = connection.createStatement();
+			
+		    String sql = "DROP TABLE MyJourney CASCADE CONSTRAINTS";
+	    
+		    stmt.executeUpdate(sql);
+		    System.out.println("MyJourney表格已刪除");
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

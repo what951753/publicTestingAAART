@@ -8,6 +8,10 @@
 <title>登出</title>
 </head>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .thankU, .content {
 	text-align: center;
 }

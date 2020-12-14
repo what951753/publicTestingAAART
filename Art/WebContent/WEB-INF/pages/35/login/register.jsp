@@ -9,6 +9,10 @@
 <title>註冊成為會員</title>
 </head>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 tr {
 	text-align: left;
 }
@@ -16,12 +20,6 @@ tr {
 .errMsg {
 	color: red;
 	padding-top: 15px;
-	font-size: 22px;
-}
-
-.emailMsg {
-	color: #006030;
-	padding-bottom: 15px;
 	font-size: 22px;
 }
 
@@ -79,9 +77,6 @@ fieldset {
 			<table class="registerForm">
 				<tr>
 					<td colspan="2" class="errMsg">${errMsg}</td>
-				</tr>
-				<tr>
-					<td colspan="2" class="emailMsg">${emailMsg}</td>
 				</tr>
 				<tr>
 					<td><form:label path="name">帳號名稱(必填):</form:label></td>

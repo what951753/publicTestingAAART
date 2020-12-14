@@ -1,6 +1,7 @@
 package tw.group4._35_.login.controller;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -35,9 +36,11 @@ public class MemberEntry {
 	public String personelInfoEntry(Model m, HttpServletRequest request){
 		
 		HttpSession session = request.getSession();
-		WebsiteMember member = (WebsiteMember)session.getAttribute("member");
-		
-		List<WebsiteMember> list = service.selectSingleMemberBase64Str(member.getName());
+		List<WebsiteMember> list = null;
+		if(Objects.nonNull(session.getAttribute("member"))) {
+			WebsiteMember member = (WebsiteMember)session.getAttribute("member");
+			list = service.selectSingleMemberBase64Str(member.getName());
+		}
 		m.addAttribute("membersList", list);
 		
 		return "35/login/personelInfoManagement";

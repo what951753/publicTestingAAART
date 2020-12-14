@@ -10,6 +10,7 @@ import java.sql.Blob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 import javax.imageio.ImageIO;
@@ -30,6 +31,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import tw.group4._35_.geo.model.Position;
+import tw.group4._35_.geo.model.PositionService;
 import tw.group4._35_.login.mail.JavaMail;
 import tw.group4._35_.login.model.WebsiteMember;
 import tw.group4._35_.login.model.WebsiteMemberService;
@@ -42,12 +45,16 @@ public class Register {
 	@Autowired
 	private ServletContext ctx;
 
+	@Autowired
+	private WebsiteMemberService wmService;
+	
+	@Autowired
+	private PositionService ptService;
+	
 	public static String regexPwd = "^(?![A-Za-z0-9]+$)(?![a-z0-9\\W]+$)(?![A-Za-z\\W]+$)(?![A-Z0-9\\W]+$)[a-zA-Z0-9\\W]{8,}$";
 	public static String regexTel = "(\\d{2,3}-?|\\(\\d{2,3}\\))\\d{3,4}-?\\d{4}|09\\d{2}(\\d{6}|-\\d{3}-\\d{3})";
 	public static String regexEmail = "^([A-Za-z0-9_\\-\\.])+\\@([A-Za-z0-9_\\-\\.])+\\.([A-Za-z]{2,4})$";
 
-	@Autowired
-	private WebsiteMemberService wmService;
 
 //	單純轉跳頁面要用GetMapping
 	@GetMapping("/35/registerEntry")
@@ -117,9 +124,9 @@ public class Register {
 				+ name + "/" + nameEncodedsNoSlash + ".ctrl\" target=\"_blank\" title=\"得藝的一天驗證成功\">點此進行驗證</a></h2>";
 		JavaMail mail = new JavaMail();
 		mail.SendMail(email, authUrl);
-		m.addAttribute("emailMsg", "請至您填寫的E-mail信箱收信，點擊信件內連結完成註冊");
+		m.addAttribute("emailMsg", "請至您填寫的E-mail開啟驗證信，完成註冊");
 
-		return "35/login/register";
+		return "35/login/goCheckEmail";
 	}
 
 //	從外部點擊網址連結要用GetMapping，若使用者點擊此代表驗證通過，開始按照邏輯塞會員資料進資料庫和session
@@ -208,16 +215,19 @@ public class Register {
 		WebsiteMember memberRegisterInfo = new WebsiteMember(member.getName(), passwordEncoded, member.getRealName(),
 				member.getAddress(), member.getEmail(), member.getTel(), "user", blob, "", now, 10000.0, "valid");
 		wmService.insert(memberRegisterInfo);
-		WebsiteMember memberFullInfo = wmService.getMemberFullInfo(memberRegisterInfo);
 
 //		如果執行到此，代表註冊成功
 //		加入名稱和歡迎用語，等等返回註冊成功頁面
-		m.addAttribute("welcome", member.getName() + "，Email驗證成功<br>歡迎成為得藝的會員");
-//		註冊成功後同時也要放入會員資料在session中，所以叫出session來放attribute "member"
-		session.setAttribute("member", memberFullInfo);
+		m.addAttribute("welcome", member.getName() + "，Email驗證成功<br>請點擊左上角重新登入");
 //		移除已經無用的sessionAttribute
 		session.removeAttribute(name + "member");
 		session.removeAttribute(name + "mFile");
+		
+		List<Position> list = ptService.recommendList();
+		m.addAttribute("recommend", list);
+		
+		return "35/login/registerSuccess";
+		
 //		下列方法是照片存webapp設定的路徑，再存資料庫
 ////		取得上傳原始檔案的名稱
 //		String fileName = mfile.getOriginalFilename();
@@ -253,8 +263,6 @@ public class Register {
 //		需要直接回傳ResponseBody到前端頁面顯示圖片，才需要下行
 //		return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(saveFile), headers, HttpStatus.OK);
 //		方法結束
-
-		return "redirect:/35/registerOkLogin";
 	}
 
 //	多轉跳一次控制器，會再重新送出request

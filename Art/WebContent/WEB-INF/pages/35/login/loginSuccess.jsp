@@ -8,6 +8,10 @@
 <title>登入成功</title>
 </head>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .welcome, .content {
 	text-align: center;
 }

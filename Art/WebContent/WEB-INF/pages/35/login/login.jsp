@@ -12,6 +12,10 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://apis.google.com/js/platform.js" async defer></script>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 tr {
 	text-align: left;
 }
@@ -116,17 +120,22 @@ fieldset {
 			</table>
 		</form:form>
 		<!-- 		<button class="googleLogin genric-btn info radius">透過Google帳戶登入</button> -->
+		<button class="forgotPwd genric-btn info radius" onclick=forgotPwd()>忘記密碼</button>
 		<button class="captcha genric-btn primary radius">登入</button>
 	</fieldset>
 	<div class="google">
 		<div class="g-signin2 googleLogin" data-onsuccess="onSignIn"></div>
-<!-- 		<a class="googleLogout" href="#" onclick="signOut();">Sign Out Test</a> -->
+		<!-- 		<a class="googleLogout" href="#" onclick="signOut();">Sign Out Test</a> -->
 	</div>
-	<div class="newImg"></div>
+	<!-- 	<div class="newImg"></div> -->
 
 	<script
 		src="https://www.google.com/recaptcha/api.js?render=6Lc_wOQZAAAAALKDlGGuMLE_iV-rjKJIYMHI9Fj6"></script>
 	<script type="text/javascript">
+
+		let forgotPwd= () => {
+			window.location.href="<c:url value='/35/forgotPwd' />";
+		}
 
 	      function onSignIn(googleUser) {
 	          // 客戶端如果有需要的話可以通過profile來獲取使用者資訊

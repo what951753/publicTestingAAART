@@ -49,7 +49,7 @@ html, body {
 
 /* 高度要設定固定高否則無法顯示地圖 */
 #artMap {
-	height: 850px;
+	height: 650px;
 	width: 100%;
 }
 
@@ -101,14 +101,6 @@ html, body {
 .myJourney {
 	display: none;
 }
-
-#myJourneyResult {
-	display: none;
-}
-
-.showPins {
-	margin-top: 20px;
-}
 </style>
 
 </head>
@@ -119,10 +111,10 @@ html, body {
 		<div class="container">
 			<div class="row d-flex align-items-center justify-content-center">
 				<div class="about-content col-lg-12">
-					<h1 class="text-white">藝文路線規劃</h1>
+					<h1 class="text-white">我的藝文足跡</h1>
 					<p class="text-white link-nav">
 						<a href="index.html">Home </a> <span class="lnr lnr-arrow-right"></span>
-						<a href="<c:url value='/35/routePlanningEntry' />">藝文路線規劃</a>
+						<a href="<c:url value='/35/myJourney' />">我的藝文足跡</a>
 					</p>
 				</div>
 			</div>
@@ -174,31 +166,24 @@ html, body {
 			<br> <br> <br> <br>
 			<div class="editPinArea">
 				<input id="editPinButton" class="genric-btn primary radius"
-					type="button" value="用圖釘標記我想去的地方">
+					type="button" value="規劃我的藝文之旅">
 				<div class="myJourney">
 					<div>
-						<label>活動名稱</label> <input id="actName" type="text">
+						<label>活動名稱</label> <input id = "actName" type="text">
 					</div>
-					<!-- 					<div> -->
-					<!-- 						<label>活動地點</label> <input type="text"> -->
-					<!-- 					</div> -->
+<!-- 					<div> -->
+<!-- 						<label>活動地點</label> <input type="text"> -->
+<!-- 					</div> -->
 					<div>
-						<label>活動時間</label> <input id="actTime" type="text">
+						<label>活動時間</label> <input id = "actTime" type="text">
 					</div>
 					<div>
 						<label>備註事項</label>
-						<textarea id="actNotes"></textarea>
+						<textarea id = "actNotes"></textarea>
 					</div>
 					<input id="savePinButton" class="genric-btn primary radius"
 						type="button" value="儲存">
 				</div>
-				<div>
-					<p id="myJourneyResult"></p>
-				</div>
-			</div>
-			<div class="showPins">
-				<input id="showPins" class="genric-btn primary radius" type=button onclick=""
-					value="顯示我已經編輯過的地點">
 			</div>
 		</div>
 	</div>
@@ -207,11 +192,15 @@ html, body {
 	<div class="container my-5 mapArea">
 		<div id="artMap"></div>
 	</div>
-	<div style="clear: both;"></div>
+	<div class="sendRoute" style="clear: both;">
+		<div class="sendRouteInner">
+			<input class="genric-btn primary radius" type=button
+				onclick="" value="顯示已規劃路線">
+		</div>
+	</div>
 
 	<script type="text/javascript">
 
-// 	初始化地圖參數，這個動作只要做一遍
     let LMap = L.map(document.getElementById('artMap'), {
         center: [23.6, 121], // 中心點
         zoom: 8, // 縮放層級
@@ -394,6 +383,10 @@ html, body {
 	let dis = document.getElementById("userDistance");
 	loc.addEventListener("change", processLocation);
 	dis.addEventListener("change", processLocation);
+
+
+
+
 	
 // 	從這之後是編輯圖釘資訊，定義後續取圖標位置的按鈕要用的變數
 
@@ -431,8 +424,8 @@ html, body {
         // 				console.log("3: "+shape);
         console.log("要用的資料: " + shape_for_db);
         siteObj = {
-                lat: shape.geometry.coordinates[1],
-                lon: shape.geometry.coordinates[0]
+                lat: shape.geometry.coordinates[0],
+                lon: shape.geometry.coordinates[1]
                 }
 //         data.set(counter, JSON.stringify(shape));
     }
@@ -448,96 +441,48 @@ html, body {
 // 	}
 
 	let myJourney = document.querySelector(".myJourney");
-	let editResult = document.getElementById("myJourneyResult");
 	let edit = document.getElementById("editPinButton");
 	let save = document.getElementById("savePinButton");
 
-	let name = document.getElementById("actName");
-	let time = document.getElementById("actTime");
-	let notes = document.getElementById("actNotes");
-
 	let editSiteObj = () => {
 		edit.style.display="none";
-		editResult.style.display="none";
 		myJourney.style.display="block";
-		name.value="";
-		time.value="";
-		notes.value="";
 	}
 	
 	edit.addEventListener("click", editSiteObj);
 
-	let previousPin;
-	let saveSiteObj = (e) => {
+	let saveSiteObj = () => {
 		edit.style.display="";
 		myJourney.style.display="none";
-
+// 		console.log(siteObj.lat);
+// 		console.log(siteObj.lon);
+		let name = document.getElementById("actName").value;
+		let time = document.getElementById("actTime").value;
+		let notes = document.getElementById("actNotes").value;
         let url = "<c:url value='/35/myJourney' />";
-		previousPin ={
-				"name": name.value,
-				"time": time.value,
-				"notes": notes.value,
-				"lat": siteObj.lat,
-				"lon": siteObj.lon
+		let data ={
+				name: name,
+				time: time,
+				notes: notes,
+				lat: siteObj.lat,
+				lon: siteObj.lon
 				}
         fetch(url, {
             method: "post",
             headers: {
                 'Content-Type': 'application/json; charset=UTF-8'
             },
-            body: JSON.stringify(previousPin)
+            body: JSON.stringify(data)
         })
             .then(status)
             .then(json)
             .then(data => {
-				editResult.style.display = "block";
-				if (data.result=="successful"){
-					editResult.innerText = "新增成功";
-				}else {
-					editResult.innerText = "新增失敗";
-				}
+				console.log(data);
             })
-
-        let positionArray =[]
-       	positionArray[0]=previousPin.lat;
-       	positionArray[1]=previousPin.lon;
-//		設定地圖中心
-    	LMap.setView(positionArray, 15);
-//		繪製查詢中心點圖釘
-        markerRed = L.marker(positionArray, {
-            icon: redIcon
-        })
-        .bindPopup("<b>"+previousPin.name+"</b>"+
-		"<br>詳細資訊: "+"<a href=\"https://www.google.com/search?q="+previousPin.name+"\" target=\"_blank\">點擊查看</a>"+
-		"<br>文化部查詢相關活動: "+"<a href=\"https://www.moc.gov.tw/searchall_5.html?q="+previousPin.name+"\" target=\"_blank\">點擊查看</a>"+
-		"<br>時間: "+previousPin.time+
-		"<br>備註: "+previousPin.notes)
-        .addTo(LMap);
-
-//	    Popup直接顯示出來
-	    markerRed.openPopup();
 	}
 	
 	save.addEventListener("click", saveSiteObj);
 
-	let showPins = document.getElementById("showPins");
-
-	let showMySiteObj = () => {
-		window.location.href="<c:url value='/35/myJourneyEntry' />";
-//         let url = "<c:url value='/35/myJourney' />";
-
-//         fetch(url, {
-//         	method: "get"
-//         })
-//         	.then(status)
-//         	.then(json)
-//         	.then(data => {
-//             	console.log(data)
-//         	});
-	}
-	
-	showPins.addEventListener("click", showMySiteObj);
-	
 	//		下方已經棄用
     // 		IIFEs(Immediately Invoked Functions Expressions)
     // 		第一個括號內是expression，JavaScript會以 expression 的方式來讀取這段函式

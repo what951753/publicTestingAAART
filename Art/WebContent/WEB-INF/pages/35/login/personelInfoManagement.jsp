@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>查看個人資訊</title>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .post {
 	display: none;
 }

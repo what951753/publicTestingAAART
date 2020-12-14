@@ -81,7 +81,7 @@
 						</li>
 						<li><a href="#">藝人聘用紀錄</a></li>
 						<li><a href="#">課程購買紀錄</a></li>
-						<li><a href="#">我設計的旅程</a></li>
+						<li><a href="<c:url value='/35/myJourneyEntry' />">我的藝文足跡</a></li>
 					</ul>
 				</nav>
 				<!-- #nav-menu-container -->

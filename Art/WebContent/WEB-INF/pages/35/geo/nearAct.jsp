@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>最近活動搜尋結果</title>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .title {
 	text-align: center;
 }

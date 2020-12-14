@@ -47,7 +47,6 @@ public class RandomRecom{
 	
 //	最近活動列表查詢
 	@Hibernate
-	@NeedLogin
 	@RequestMapping(path = "/35/randomRecom.ctrl", method = RequestMethod.GET)
     public String randomRecom(Model m) {
 
@@ -77,17 +76,6 @@ public class RandomRecom{
 		}else {
 			return "35/login/loginSuccess";
 		}
-	}
-	
-//	註冊成功隨機推薦
-	@Hibernate
-	@GetMapping("/35/registerOkLogin")
-	public String randomRecomRegisterSuccess(Model m, @ModelAttribute("welcome") String welcome) {
-		
-		List<Position> list = ptService.recommendList();
-		m.addAttribute("recommend", list);
-		
-		return "35/login/registerSuccess";
 	}
 	
 //	登出隨機推薦

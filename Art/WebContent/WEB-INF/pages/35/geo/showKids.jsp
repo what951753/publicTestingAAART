@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>CSR</title>
 <style>
+body {
+	font-size: 26px;
+	color: black;
+}
 .content, form {
 	text-align: center;
 }
