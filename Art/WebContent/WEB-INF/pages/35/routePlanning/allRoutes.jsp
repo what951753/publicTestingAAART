@@ -249,9 +249,19 @@ html, body {
 	let oneKey2 = document.getElementById("oneKey2");
 
 	oneKey2.addEventListener("click", () => {
-		document.getElementById("actName").value="七週年小驚喜";
-		document.getElementById("actTime").value="2020/12/26";
-		document.getElementById("actNotes").value="久違的與女友約會，這個活動種類看起來她會喜歡，到時候要記得搶票";
+		if(getRandomInt(3)==0){
+			document.getElementById("actName").value="七週年小驚喜";
+			document.getElementById("actTime").value="2020/12/26";
+			document.getElementById("actNotes").value="久違的與女友約會，這個活動種類看起來她會喜歡，到時候要記得搶票";
+		}else if(getRandomInt(3)==1) {
+			document.getElementById("actName").value="這是一個很酷的活動";
+			document.getElementById("actTime").value="2020/12/31";
+			document.getElementById("actNotes").value="新北塞車城，有喜歡的歌手會來，必去！";
+		}else {
+			document.getElementById("actName").value="鐵道部歷史展覽";
+			document.getElementById("actTime").value="2020/12/30";
+			document.getElementById("actNotes").value="鐵道部終於整修完成了，就在台北車站旁邊而已！";
+		}
 	});
 	
 

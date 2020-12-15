@@ -30,7 +30,7 @@ public class RoutePlanning {
 	PositionService service;
 	
 	@Autowired
-	MyJourneyService myJourneyService;
+	MyJourneyService mjService;
 	
 //	新增我規劃的行程資料
 	@Hibernate
@@ -43,7 +43,7 @@ public class RoutePlanning {
 			WebsiteMember member = (WebsiteMember)session.getAttribute("member");
 			myJourney.setMemberName(member.getName());
 		}
-		boolean result = myJourneyService.insertMyJourney(myJourney);
+		boolean result = mjService.insertMyJourney(myJourney);
 		
 		if (result == true) {
 			map.put("result", "successful");
@@ -55,21 +55,18 @@ public class RoutePlanning {
 	}
 	
 //	取得我規劃的行程資料
-	@NeedLogin
 	@Hibernate
 	@GetMapping(value = "/35/myJourney")
-	public MyJourney getMyJourney(HttpServletRequest request) {
+	public List<MyJourney> getMyJourney(HttpServletRequest request) {
 		
-		MyJourney myJourney = new MyJourney();
+		List<MyJourney> list = null;
 		HttpSession session = request.getSession();
 		if(Objects.nonNull(session.getAttribute("member"))) {			
 			WebsiteMember member = (WebsiteMember)session.getAttribute("member");
-			myJourney.setMemberName(member.getName());
-//			myJourneyService.get
+			list = mjService.getMyJourney(member.getName());
 		}
 
-		
-		return null;
+		return list;
 	}
 
 	@Hibernate

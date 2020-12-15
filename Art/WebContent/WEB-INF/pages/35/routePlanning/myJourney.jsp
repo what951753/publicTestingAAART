@@ -108,7 +108,7 @@ html, body {
 }
 
 .showPins {
-	margin-top: 20px;
+	margin: 40px 0;
 }
 
 .searchBox1, .searchBox2r {
@@ -144,6 +144,10 @@ html, body {
 	<div class="askLocation">
 		<div class="askLocationInner">
 			<!-- 			<h1>今晚，我想來點(X)</h1> -->
+			<div class="showPins">
+				<input id="showPins" class="genric-btn primary radius" type=button
+					onclick=getMyJourney() value="顯示我的地點">
+			</div>
 			<div class="searchBox1">
 				<h1>輸入任意地點，尋找活動：</h1>
 				<input type="text" id="userLocation">
@@ -205,10 +209,6 @@ html, body {
 					<p id="myJourneyResult"></p>
 				</div>
 			</div>
-			<div class="showPins">
-				<input id="showPins" class="genric-btn primary radius" type=button
-					onclick="" value="顯示我已經編輯過的地點">
-			</div>
 		</div>
 	</div>
 
@@ -246,11 +246,21 @@ html, body {
 	});
 
 	let oneKey2 = document.getElementById("oneKey2");
-
+	
 	oneKey2.addEventListener("click", () => {
-		document.getElementById("actName").value="七週年小驚喜";
-		document.getElementById("actTime").value="2020/12/26";
-		document.getElementById("actNotes").value="久違的與女友約會，這個活動種類看起來她會喜歡，到時候要記得搶票";
+		if(getRandomInt(3)==0){
+			document.getElementById("actName").value="七週年小驚喜";
+			document.getElementById("actTime").value="2020/12/26";
+			document.getElementById("actNotes").value="久違的與女友約會，這個活動種類看起來她會喜歡，到時候要記得搶票";
+		}else if(getRandomInt(3)==1) {
+			document.getElementById("actName").value="這是一個很酷的活動";
+			document.getElementById("actTime").value="2020/12/31";
+			document.getElementById("actNotes").value="新北塞車城，有喜歡的歌手會來，必去！";
+		}else {
+			document.getElementById("actName").value="鐵道部歷史展覽";
+			document.getElementById("actTime").value="2020/12/30";
+			document.getElementById("actNotes").value="鐵道部終於整修完成了，就在台北車站旁邊而已！";
+		}
 	});
 	
 
@@ -306,6 +316,25 @@ html, body {
 
     let json = response => {
         return response.json()
+    }
+
+    let getMyJourney = () => {
+    	let url = "<c:url value='/35/myJourney' />";
+
+         fetch(url, {
+             method: "get"
+         })
+             .then(status)
+             .then(json)
+             .then(data => {
+ 				console.log(data);
+//  				if (data.result=="successful"){
+//  					editResult.innerText = "新增成功";
+//  				}else {
+//  					editResult.innerText = "新增失敗";
+//  				}
+             })
+
     }
 
 //  定義後面map會用到的變數
@@ -564,22 +593,6 @@ html, body {
 	save.addEventListener("click", saveSiteObj);
 
 	let showPins = document.getElementById("showPins");
-
-	let showMySiteObj = () => {
-		window.location.href="<c:url value='/35/myJourneyEntry' />";
-//         let url = "<c:url value='/35/myJourney' />";
-
-//         fetch(url, {
-//         	method: "get"
-//         })
-//         	.then(status)
-//         	.then(json)
-//         	.then(data => {
-//             	console.log(data)
-//         	});
-	}
-	
-	showPins.addEventListener("click", showMySiteObj);
 	
 	//		下方已經棄用
     // 		IIFEs(Immediately Invoked Functions Expressions)

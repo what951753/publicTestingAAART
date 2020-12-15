@@ -1,5 +1,7 @@
 package tw.group4._35_.routePlanning.model;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +17,9 @@ public class MyJourneyService {
 	
 	public boolean insertMyJourney(MyJourney myJourney) {
 		return dao.insertMyJourney(myJourney);
+	}
+	
+	public List<MyJourney> getMyJourney(String memberName) {
+		return dao.getMyJourney(memberName);
 	}
 }
