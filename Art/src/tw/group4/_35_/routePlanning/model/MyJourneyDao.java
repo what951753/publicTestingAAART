@@ -33,7 +33,7 @@ public class MyJourneyDao {
 		Session session = sessionFactory.getCurrentSession();
 		
 		Query<MyJourney> query = session.createQuery("From MyJourney where memberName = :name", MyJourney.class);
-		query.setParameter("memberName", memberName);
+		query.setParameter("name", memberName);
 		List<MyJourney> list = query.list();
 		
 		return list;
